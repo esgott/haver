@@ -4,7 +4,7 @@
 	<name>HAVER</name>
 	<author>Zsolt Szilagyi</author>
 	<version>0.0</version>
-	<descripton>Community plugin for the campus</descripton>
+	<description>Community plugin for the campus</description>
 	<requires>
 	    <type>elgg_version</type>
 	    <version>1.8</version>
