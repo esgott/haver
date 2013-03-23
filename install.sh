@@ -12,4 +12,4 @@ for component in $COMPONENTS; do
 done
 
 chgrp -R http $TARGET
-chmod -R 775 $TARGET 
+chmod -R 775 $TARGET
