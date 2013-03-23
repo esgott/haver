@@ -7,4 +7,6 @@ function calendar_handler($segments) {
 	return true;
 }
 
+elgg_register_action('calendar_file_upload', elgg_get_plugins_path() . 'haver/actions/calendar_file_upload.php');
+
 ?>
