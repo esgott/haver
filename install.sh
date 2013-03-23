@@ -4,7 +4,8 @@ SOURCE="/home/esgott/workspace/haver"
 TARGET="/home/esgott/public_html/elgg/mod/haver"
 COMPONENTS="manifest.xml start.php"
 
-rm -rf $TARGET/haver/*
+mkdir -p $TARGET
+rm -rf $TARGET/*
 
 for component in $COMPONENTS; do
 	cp $SOURCE/$component $TARGET
