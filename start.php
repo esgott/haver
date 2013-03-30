@@ -9,4 +9,7 @@ function calendar_handler($segments) {
 
 elgg_register_action('calendar_file_upload', elgg_get_plugins_path() . 'haver/actions/calendar_file_upload.php');
 
+$menuItem = new ElggMenuItem('haver_calendar_upload', 'Calendar upload', 'calendar');
+elgg_register_menu_item('site', $menuItem);
+
 ?>
