@@ -11,7 +11,7 @@ $form_body .= elgg_view('input/submit', array(
 echo elgg_view('input/form', array(
 	'body' => $form_body,
 	'enctype' => 'multipart/form-data',
-	'action' => 'action/calendar_file_upload'
+	'action' => 'action/haver/calendar_file_upload'
 ));
 
 ?>
