@@ -1,8 +1,7 @@
 <?php
-// get the form inputs
-// $title = get_input('title');
-// $body = get_input('body');
-// $tags = string_to_tag_array(get_input('tags'));
+$group_id = get_input('to');
+$to_group = get_entity($group_id);
+$message = get_input('message');
 
 // create a new my_blog object
 // $blog = new ElggObject();
@@ -32,5 +31,6 @@
 //    forward(REFERER); // REFERER is a global variable that defines the previous page
 // }
 
-system_message('Message was not sent');
+$name = $to_group->name;
+system_message("$name : $message");
 ?>
