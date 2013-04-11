@@ -1,3 +1,6 @@
 <?php
-echo '<p>This should be a message</p>';
+
+echo elgg_view_title($vars['entity']->title);
+echo elgg_view('output/longtext', array('value' => $vars['entity']->description));
+
 ?>
