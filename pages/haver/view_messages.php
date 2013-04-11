@@ -2,9 +2,12 @@
 
 gatekeeper();
 
-$title = 'Send new message';
+$title = 'Messages';
 $content = elgg_view_title($title);
-$content .= elgg_view_form('haver/new_message');
+$content .= elgg_list_entities(array(
+		'type' => 'object',
+		'subtype' => 'haver_message',
+));
 
 $sidebar = '';
 
