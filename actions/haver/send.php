@@ -1,36 +1,23 @@
 <?php
 $group_id = get_input('to');
 $to_group = get_entity($group_id);
-$message = get_input('message');
+$message_body = get_input('message');
 
-// create a new my_blog object
-// $blog = new ElggObject();
-// $blog->subtype = "my_blog";
-// $blog->title = $title;
-// $blog->description = $body;
+$message = new ElggObject();
+$message->subtype = "haver_message";
+$message->title = 'Message';
+$message->description = $message_body;
+$message->access_id = ACCESS_LOGGED_IN;
+$message->owner_guid = group_id;
 
-// for now make all my_blog posts public
-// $blog->access_id = ACCESS_PUBLIC;
+$message_guid = $message->save();
 
-// owner is logged in user
-// $blog->owner_guid = elgg_get_logged_in_user_guid();
+if ($message_guid) {
+	system_message("Your message was sent");
+	forward($message->getURL());
+} else {
+	register_error("Unsuccessful message sending");
+	forward(REFERER); //REFERER is a global variable that defines the previous page
+}
 
-// save tags as metadata
-// $blog->tags = $tags;
-
-// save to database and get id of the new my_blog
-// $blog_guid = $blog->save();
-
-// if the my_blog was saved, we want to display the new post
-// otherwise, we want to register an error and forward back to the form
-// if ($blog_guid) {
-//    system_message("Your blog post was saved");
-//    forward($blog->getURL());
-// } else {
-//    register_error("The blog post could not be saved");
-//    forward(REFERER); // REFERER is a global variable that defines the previous page
-// }
-
-$name = $to_group->name;
-system_message("$name : $message");
 ?>
