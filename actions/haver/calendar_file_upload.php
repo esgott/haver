@@ -80,7 +80,6 @@ function new_group($id, $name) {
 	$group->description = $id;
 	$group->save();
 	$group->course = $id;
-	$group->save();
 	return $group;
 }
 
