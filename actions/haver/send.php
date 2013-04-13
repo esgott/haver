@@ -8,7 +8,7 @@ $message->subtype = "haver_message";
 $message->title = 'Message';
 $message->description = $message_body;
 $message->access_id = ACCESS_LOGGED_IN;
-$message->owner_guid = group_id;
+$message->owner_guid = $group_id;
 
 $message_guid = $message->save();
 
