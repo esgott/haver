@@ -128,6 +128,12 @@ function receive_messages($message_list_head, $inbox, $groups) {
 
 function get_new_messages($inbox, $groups) {
 	global $log_file;
+
+	if (count($groups) == 0) {
+		fwrite($log_file, "No groups for this user\n");
+		return array();
+	}
+
 	$group_guids = array();
 	foreach ($groups as $group) {
 		$guid = $group->guid;
