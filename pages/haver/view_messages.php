@@ -62,6 +62,7 @@ function insert_new_messages($inbox) {
 		$message_list_head = elgg_get_entities(array(
 				'guids' => $message_list_guid
 		));
+		$message_list_head = $message_list_head[0];
 	} else {
 		fwrite($log_file, "Creating message list\n");
 		$message_list_head = create_message_list();
@@ -70,7 +71,7 @@ function insert_new_messages($inbox) {
 	}
 
 	fwrite($log_file, "Message list head guid: $message_list_guid\n");
-	receive_messages($message_list_head[0], $inbox, $groups);
+	receive_messages($message_list_head, $inbox, $groups);
 }
 
 function create_message_list($message_guid = -1) {
@@ -164,10 +165,37 @@ receive_new_messages();
 
 $title = 'Messages';
 $content = elgg_view_title($title);
-$content .= elgg_list_entities(array(
-		'type' => 'object',
-		'subtype' => 'haver_message',
+
+$inbox = elgg_get_entities_from_relationship(array(
+		'relationship' => 'inbox',
+		'relationship_guid' => elgg_get_logged_in_user_guid()
 ));
+
+$message_element = elgg_get_entities(array(
+		'guids' => $inbox->message_list
+));
+
+fwrite($log_file, "Iterating through messages\n");
+for ($i = 0; $i < 10; $i++) {
+	$message_element = $message_element[0];
+	$message_guid = $message_element->message_guid;
+	fwrite($log_file, " Message list element $message_element->guid message $message_guid next message list element $message_element->next_element_guid \n");
+	if ($message_guid > 0) {
+		$message = elgg_get_entities(array(
+				'guids' => $message_guid
+		));
+		$message = $message[0];
+		fwrite($log_file, " Message body: $message->description \n");
+		$content .= elgg_view_list_item($message);
+	}
+	if ($message_element->next_element_guid) {
+		$message_element = elgg_get_entities(array(
+				'guids' => $message_element->next_element_guid
+		));
+	} else {
+		break;
+	}
+}
 
 $sidebar = '';
 
