@@ -89,6 +89,11 @@ function receive_messages($message_list_head, $inbox, $groups) {
 	$previous_message_list_element = $message_list_head;
 
 	$messages = get_new_messages($inbox, $groups);
+
+	if(!$messages) {
+		return;
+	}
+
 	$message_count = count($messages);
 	fwrite($log_file, "Messages queried: $message_count return value: $messages\n");
 
