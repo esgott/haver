@@ -1,4 +1,7 @@
 <?php
+
+gatekeeper();
+
 $group_id = get_input('to');
 $to_group = get_entity($group_id);
 $message_body = get_input('message');

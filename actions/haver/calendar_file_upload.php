@@ -1,5 +1,7 @@
 <?php
 
+gatekeeper();
+
 global $log_file; //TODO remove log file
 
 $file = $_FILES['upload']['tmp_name'];
