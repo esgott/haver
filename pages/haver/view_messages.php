@@ -2,6 +2,14 @@
 
 gatekeeper();
 
+global $message_score_weight;
+global $group_score_weight;
+global $author_score_weight;
+$message_score_weight = 0.33;
+$group_score_weight = 0.33;
+$author_score_weight = 0.33;
+
+
 global $log_file;
 $log_file = fopen('/home/esgott/public_html/output.txt', 'w');
 
@@ -101,6 +109,8 @@ function receive_messages($message_list_head, $inbox, $groups) {
 		$newest_message = $messages[0]->getTimeCreated();
 	}
 
+	$order_of_messages = get_order($messages);
+
 	foreach ($messages as $message) {
 		$body = $message->description;
 		fwrite($log_file, " Message: $body $message->guid $message->owner_guid \n");
@@ -170,6 +180,78 @@ function get_new_messages($inbox, $groups) {
 	}
 
 	return elgg_get_entities($options);
+}
+
+function get_order($messages) {
+	$message_count = count($messages);
+	$scores = array();
+
+	for ($i = 0; $i < $message_count; $i++) {
+		$current_message = $messages[$i];
+		$message_score = get_message_score($current_message);
+		$group_score = get_group_score($current_message);
+		$author_score = get_author_score($current_message);
+		$scores[$i] = $message_score + $group_score + $author_score;
+	}
+
+	$order = array();
+	$reverse_sorted_scores = $scores;
+	rsort($reverse_sorted_scores);
+
+	for ($i = 0; $i < $message_count; $i++) {
+		$position = get_position($reverse_sorted_scores, $scores[$i]);
+		$order[$position] = $i;
+	}
+}
+
+function get_message_score($message) {
+	global $message_score_weight;
+	$relationships = get_entity_relationships($message->getGUID());
+	$likes_count = 0;
+
+	foreach ($relationships as $relationship) {
+		if ($relationship->getSubtype == 'haver_like') {
+			$likes_count++;
+		}
+	}
+
+	return $likes_count * $message_score_weight;
+}
+
+function get_group_score($message) {
+	global $group_score_weight;
+	$group = get_entity($message->owner_guid);
+	$likes_count = $group->countAnnotations('haver_likes');
+	$dislikes_count = $group->countAnnotations('haver_dislikes');
+	if ($likes_count > $dislikes_count) {
+		return ($likes_count - $dislikes_count) * $group_score_weight;
+	} else {
+		return 0;
+	}
+}
+
+function get_author_score($current_message) {
+	global $author_score_weight;
+	$author = get_entity($message->author);
+	if ($author) {
+		$likes_count = $author->countAnnotations('haver_likes');
+		$dislikes_count = $author->countAnnotations('haver_dislikes');
+		if ($likes_count > $dislikes_count) {
+			return ($likes_count - $dislikes_count) * $group_score_weight;
+		} else {
+			return 0;
+		}
+	}
+}
+
+function get_position($reverse_sorted_array, $element) {
+	for ($i = 0; $i < count($reverse_sorted_array); $i++) {
+		if ($reverse_sorted_array[$i] == $element) {
+			return $i;
+		}
+	}
+
+	return false;
 }
 
 receive_new_messages();

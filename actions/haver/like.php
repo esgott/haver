@@ -18,6 +18,7 @@ if ($message) {
 	if ($already_liked === false) {
 		add_entity_relationship($user_guid, 'haver_like', $message_guid);
 		update_group_of_message($message);
+		update_owner_of_message($message);
 		system_message("Message liked");
 	} else {
 		system_message("Already liked");
@@ -32,12 +33,24 @@ function update_group_of_message($message) {
 			'guids' => $group_guid
 	));
 
-	if(!$group) {
+	if (!$group) {
 		register_error("Group $group_guid not found");
 	}
 
 	$group = $group[0];
 	$group->annotate('haver_likes', 1, ACCESS_LOGGED_IN);
+}
+
+function update_owner_of_message($message) {
+	$user_guid = $message->author;
+	$user = get_user($user_guid);
+
+	if (!$user) {
+		register_error("Author $user_guid not found");
+	}
+
+	$user = $user[0];
+	$user->annotate('haver_likes', 1, ACCESS_LOGGED_IN);
 }
 
 ?>

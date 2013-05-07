@@ -15,6 +15,8 @@ $message->owner_guid = $group_id;
 
 $message_guid = $message->save();
 
+$message->author = elgg_get_logged_in_user_guid();
+
 if ($message_guid) {
 	system_message("Your message was sent");
 	forward($message->getURL());
