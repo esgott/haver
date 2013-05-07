@@ -19,6 +19,7 @@ function haver_page_handler($segments) {
 elgg_register_action('haver/calendar_file_upload', elgg_get_plugins_path() . 'haver/actions/haver/calendar_file_upload.php');
 elgg_register_action('haver/new_message', elgg_get_plugins_path() . 'haver/actions/haver/send.php');
 elgg_register_action('haver/like', elgg_get_plugins_path() . 'haver/actions/haver/like.php');
+elgg_register_action('haver/dislike', elgg_get_plugins_path() . 'haver/actions/haver/dislike.php');
 
 $menuItem = new ElggMenuItem('haver_calendar_upload', 'Calendar upload', 'haver/calendar');
 elgg_register_menu_item('site', $menuItem);

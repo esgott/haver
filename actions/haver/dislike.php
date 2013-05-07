@@ -16,11 +16,11 @@ if ($message) {
 	$already_liked = check_entity_relationship($user_guid, 'haver_like', $message_guid);
 
 	if ($already_liked === false) {
-		add_entity_relationship($user_guid, 'haver_like', $message_guid);
-		update_group_of_message($message);
-		system_message("Message liked");
+		system_message("Not liked");
 	} else {
-		system_message("Already liked");
+		remove_entity_relationship($user_guid, 'haver_like', $message_guid);
+		update_group_of_message($message);
+		system_message("Message disliked");
 	}
 } else {
 	register_error("Message $message_guid not found");
@@ -32,12 +32,12 @@ function update_group_of_message($message) {
 			'guids' => $group_guid
 	));
 
-	if(!$group) {
+	if(!group) {
 		register_error("Group $group_guid not found");
 	}
 
 	$group = $group[0];
-	$group->annotate('haver_likes', 1, ACCESS_LOGGED_IN);
+	$group->annotate('haver_dislikes', 1, ACCESS_LOGGED_IN);
 }
 
 ?>
