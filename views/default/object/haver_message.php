@@ -8,7 +8,7 @@ echo elgg_view('output/longtext', array('value' => $message->description));
 $message_guid = $message->getGUID();
 $user_guid = elgg_get_logged_in_user_guid();
 
-if (check_entity_relationship($user_guid, 'haver_like', $message_guid)) {
+if (check_entity_relationship($user_guid, 'haver_like', $message_guid) === false) {
 
 	echo elgg_view('output/url', array(
 			'text' => 'Like',
