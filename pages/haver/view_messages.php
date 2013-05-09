@@ -111,7 +111,9 @@ function receive_messages($message_list_head, $inbox, $groups) {
 
 	$order_of_messages = get_order($messages);
 
-	foreach ($messages as $message) {
+	for ($i = 0; $i < count($order_of_messages); $i++) {
+		$next_message_index = $order_of_messages[$i];
+		$message = $messages[$next_message_index];
 		$body = $message->description;
 		fwrite($log_file, " Message: $body $message->guid $message->owner_guid \n");
 

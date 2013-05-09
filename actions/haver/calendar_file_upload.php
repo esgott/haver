@@ -77,7 +77,7 @@ function create_group($id, $name) {
 function new_group($id, $name) {
 	$group = new ElggGroup();
 	$group->subtype = 'haver_group';
-	$group->access_id = 1;
+	$group->access_id = ACCESS_LOGGED_IN;
 	$group->name = $name;
 	$group->description = $id;
 	$group->save();
